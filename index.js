@@ -22,16 +22,10 @@ app.get('/', (req, res) => {
   res.render('home');
 });
 
-// app.get('/makecampground', async (req, res) => {
-//   const camp = new Campground({
-//     title: 'My backyard',
-//     price: '25.99',
-//     description: 'fajsdfljasdf ñlasjdfñlasdj flñasdjfasd',
-//     location: 'Palm Springs',
-//   });
-//   await camp.save();
-//   res.send(camp);
-// });
+app.get('/campgrounds', async (req, res) => {
+  const campgrounds = await Campground.find({});
+  res.render('campgrounds/index', { campgrounds });
+});
 
 app.listen(3000, () => {
   console.log('Listening on port 3000...');
