@@ -29,6 +29,27 @@ app.engine('ejs', ejsMate);
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
 
+const validateCampground = (req, res, next) => {
+  const campgroundSchema = Joi.object({
+    campground: Joi.object({
+      title: Joi.string().required(),
+      price: Joi.number().required().min(0),
+      imageURL: Joi.string().required(),
+      location: Joi.string().required(),
+      description: Joi.string().required(),
+    }).required(),
+  });
+
+  const { error } = campgroundSchema.validate(req.body);
+
+  if (error) {
+    const msg = error.details.map((el) => el.message).join(',');
+    throw new ExpressError(msg, 400);
+  } else {
+    next();
+  }
+};
+
 app.get('/', (req, res) => {
   res.render('home');
 });
@@ -75,27 +96,8 @@ app.put(
 
 app.post(
   '/campgrounds',
+  validateCampground,
   catchAsync(async (req, res, next) => {
-    // if (!req.body.campground)
-    //   throw new ExpressError('Invalid Campground Data', 400);
-
-    const campgroundSchema = Joi.object({
-      campground: Joi.object({
-        title: Joi.string().required(),
-        price: Joi.number().required().min(0),
-        imageURL: Joi.string().required(),
-        location: Joi.string().required(),
-        description: Joi.string().required(),
-      }).required(),
-    });
-
-    const { error } = campgroundSchema.validate(req.body);
-    if (error) {
-      const msg = error.details.map((el) => el.message).join(',');
-      throw new ExpressError(msg, 400);
-    }
-
-    console.log(result);
     const campground = new Campground(req.body.campground);
     await campground.save();
     res.redirect(`/campgrounds/${campground._id}`);
