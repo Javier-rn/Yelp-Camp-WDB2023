@@ -27,7 +27,12 @@ const seedDB = async () => {
     const price = Math.floor(Math.random() * 20) + 10;
     const camp = new Campground({
       title: `${sample(descriptors)} ${sample(places)}`,
-      imageURL: await getRandomImage(),
+      images: [
+        {
+          url: 'https://res.cloudinary.com/dptejwozn/image/upload/v1681470491/YelpCamp/dlxaibhxatwjedc8d9ly.jpg',
+          filename: 'YelpCamp/dlxaibhxatwjedc8d9ly',
+        },
+      ],
       description:
         'Lorem ipsum dolor sit amet consectetur adipisicing elit. Minima et sequi quia molestias beatae similique commodi, ex laudantium inventore itaque accusamus aut. Ea ducimus asperiores temporibus incidunt recusandae, placeat accusamus.',
       location: `${cities[random1000].city}, ${cities[random1000].state}`,
