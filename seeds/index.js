@@ -20,7 +20,7 @@ const sample = (array) => {
 
 const seedDB = async () => {
   await Campground.deleteMany({});
-  for (let i = 0; i < 30; i++) {
+  for (let i = 0; i < 300; i++) {
     const author = '6431842c51d93d90f0e0630f';
     const random1000 = Math.floor(Math.random() * 1000) + 1;
     const price = Math.floor(Math.random() * 20) + 10;
